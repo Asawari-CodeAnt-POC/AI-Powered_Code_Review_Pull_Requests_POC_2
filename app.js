@@ -42,3 +42,14 @@ app.get("/login", (req, res) => {
 
   res.send(query);
 });
+app.get("/config", (req, res) => {
+  const dbPassword = "SuperSecretPassword123!";
+  const apiKey = "sk_live_123456789abcdef";
+
+  res.json({
+    database: "prod-db",
+    username: "admin",
+    password: dbPassword,
+    stripeKey: apiKey
+  });
+});
