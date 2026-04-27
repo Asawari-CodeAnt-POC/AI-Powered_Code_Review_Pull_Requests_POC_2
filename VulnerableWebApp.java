@@ -30,10 +30,14 @@ ResultSet rs = stmt.executeQuery();
         try {
             if ("/user".equals(path)) {
 
-                String userId = request.getParameter("id");
+               String userId = request.getParameter("id");
 
-                // ❌ Vulnerable SQL query
-                String query = "SELECT * FROM users WHERE id = " + userId;
+// ✅ Secure parameterized query
+String query = "SELECT * FROM users WHERE id = ?";
+
+PreparedStatement stmt = conn.prepareStatement(query);
+stmt.setInt(1, Integer.parseInt(userId));
+ResultSet rs = stmt.executeQuery();
 
                 Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
                 Statement stmt = conn.createStatement();
