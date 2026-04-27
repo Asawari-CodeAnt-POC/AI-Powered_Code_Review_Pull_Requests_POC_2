@@ -66,10 +66,12 @@ ResultSet rs = stmt.executeQuery();
                 String password = request.getParameter("password");
 
                 // ❌ Vulnerable authentication query
-                String query = "SELECT * FROM users WHERE username='" +
-                        username +
-                        "' AND password='" +
-                        password + "'";
+               String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+
+PreparedStatement stmt = conn.prepareStatement(query);
+stmt.setString(1, username);
+stmt.setString(2, password);
+ResultSet rs = stmt.executeQuery();
 
                 Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
                 Statement stmt = conn.createStatement();
