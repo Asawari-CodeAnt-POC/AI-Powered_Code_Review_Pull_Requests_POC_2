@@ -39,20 +39,23 @@ PreparedStatement stmt = conn.prepareStatement(query);
 stmt.setInt(1, Integer.parseInt(userId));
 ResultSet rs = stmt.executeQuery();
 
-                Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(query);
+                try (
+    Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+    PreparedStatement stmt = conn.prepareStatement(query)
+) {
+    stmt.setInt(1, Integer.parseInt(userId));
 
-                out.println("<h2>User Query Executed:</h2>");
-                out.println("<p>" + query + "</p>");
+    try (ResultSet rs = stmt.executeQuery()) {
 
-                while (rs.next()) {
-                    out.println("<div>User: " + rs.getString("username") + "</div>");
-                }
+        out.println("<h2>User Results:</h2>");
 
-                rs.close();
-                stmt.close();
-                conn.close();
+        while (rs.next()) {
+            out.println("<div>User: " +
+                    escapeHtml(rs.getString("username")) +
+                    "</div>");
+        }
+    }
+}
             }
 
             /*
