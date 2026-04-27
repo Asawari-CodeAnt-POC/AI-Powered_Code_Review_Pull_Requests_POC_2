@@ -10,9 +10,10 @@ import java.sql.*;
 @WebServlet("/*")
 public class VulnerableWebApp extends HttpServlet {
 
-    private final String DB_URL = "jdbc:mysql://localhost:3306/appdb";
-    private final String DB_USER = "root";
-    private final String DB_PASSWORD = "rootpassword";
+   String query = "SELECT * FROM users WHERE id = ?";
+PreparedStatement stmt = conn.prepareStatement(query);
+stmt.setInt(1, Integer.parseInt(userId));
+ResultSet rs = stmt.executeQuery();
 
     /*
      SQL Injection Vulnerability
