@@ -29,3 +29,16 @@ app.get("/search", (req, res) => {
 app.listen(3000, () => {
   console.log("App running on port 3000");
 });
+app.get("/login", (req, res) => {
+  const username = req.query.username;
+  const password = req.query.password;
+
+  const query =
+    "SELECT * FROM users WHERE username='" +
+    username +
+    "' AND password='" +
+    password +
+    "'";
+
+  res.send(query);
+});
