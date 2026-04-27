@@ -100,10 +100,17 @@ ResultSet rs = stmt.executeQuery();
             */
             else if ("/search".equals(path)) {
 
-                String term = request.getParameter("term");
+              String term = request.getParameter("term");
 
-                // ❌ Reflected XSS
-                out.println("<h1>Search Results for: " + term + "</h1>");
+// ✅ Escape user input to prevent XSS
+String safeTerm = term == null ? "" :
+        term.replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace("\"", "&quot;")
+            .replace("'", "&#x27;");
+
+out.println("<h1>Search Results for: " + safeTerm + "</h1>");
             }
 
             else {
